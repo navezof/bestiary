@@ -1,0 +1,22 @@
+import { Characteristic } from "./characteristic";
+import type { CharacteristicDefinition } from "./creature.type";
+
+export class Creature {
+  private _characteristics: Characteristic[];
+
+  constructor(definitions: CharacteristicDefinition[]) {
+    this._characteristics = definitions.map(
+      (definition) => new Characteristic(definition)
+    );
+  }
+
+  public get characteristics(): readonly Characteristic[] {
+    return this._characteristics;
+  }
+
+  public getCharacteristic(name: string): Characteristic | undefined {
+    return this._characteristics.find(
+      (characteristic) => characteristic.name === name
+    );
+  }
+}
