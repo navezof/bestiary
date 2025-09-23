@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./App.css";
 import { Creature } from "./Creature/creature";
-import { BASE_CHARACTERISTIC_DEFINITION } from "./Creature/characteristic-definitions";
-import { CreatureDisplay } from "./Creature/CreatureDisplay";
 import type { Species } from "./Creature/creature.type";
-import { SpeciesDefinition } from "./Creature/data/species";
+import { SpeciesDefinition } from "./Creature/data/species.data";
+import { rollDie } from "./Creature/utilities";
+import { BASE_CHARACTERISTIC_DEFINITION } from "./Creature/data/characteristics.data";
+import { CreatureDisplay } from "./Creature/creatureDisplay";
 
 function App() {
   const [creature, setCreature] = useState<Creature | null>(null);
@@ -14,7 +15,8 @@ function App() {
     // Placeholder for species application logic
     console.log("Apply species to creature");
     Object.entries(species.baseCharacteristics).forEach(([key, value]) => {
-      creature.setCharacteristicValue(key, value);
+      const randomValue = value - 10 + rollDie("2d10");
+      creature.setCharacteristicValue(key, randomValue);
     });
   };
 
