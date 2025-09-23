@@ -1,65 +1,89 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
-import { Creature } from "./Creature/creature";
-import type { Species } from "./Creature/creature.type";
-import { SpeciesDefinition } from "./Creature/data/species.data";
-import { rollDie } from "./Creature/utilities";
-import { BASE_CHARACTERISTIC_DEFINITION } from "./Creature/data/characteristics.data";
-import { CreatureDisplay } from "./Creature/creatureDisplay";
+import { rollDie } from "./utilities";
+import { BASE_CHARACTERISTIC_DEFINITION } from "./data/characteristics.data";
+import { SpeciesDefinition } from "./data/species.data";
+import { CreatureDisplay } from "./CreatureDisplay";
+import type { Species, TraitDefinition } from "./creature.type";
+import { Creature } from "./Creature";
+import { TraitsDisplay } from "./TraitDisplay";
+
+// Helper functions moved outside the component to prevent re-creation on render.
+const getSpeciesByName = (name: string): Species => {
+  const species = SpeciesDefinition.find((s) => s.name === name);
+  if (!species) {
+    throw new Error(`Species with name ${name} not found`);
+  }
+  return species;
+};
+
+const applySpecies = (creature: Creature, species: Species) => {
+  console.log("Apply species to creature");
+  Object.entries(species.baseCharacteristics).forEach(([key, value]) => {
+    const randomValue = value - 10 + rollDie("2d10");
+    creature.setCharacteristicValue(key, randomValue);
+  });
+  species.baseTraits?.forEach((trait: TraitDefinition) =>
+    creature.addTrait(trait)
+  );
+};
+
+// The SpeciesSelector component is extracted from App.
+interface SpeciesSelectorProps {
+  selectedSpecies: string;
+  onSpeciesChange: (species: string) => void;
+}
+
+const SpeciesSelector = ({
+  selectedSpecies,
+  onSpeciesChange,
+}: SpeciesSelectorProps) => {
+  return (
+    <select
+      id="creatureTypeSelect"
+      value={selectedSpecies}
+      onChange={(e) => onSpeciesChange(e.target.value)}
+    >
+      <option value="">Select a Species</option>
+      {SpeciesDefinition.map((species) => (
+        <option key={species.name} value={species.name}>
+          {species.name}
+        </option>
+      ))}
+    </select>
+  );
+};
 
 function App() {
   const [creature, setCreature] = useState<Creature | null>(null);
-  const [selectedSpecies, setSelectedSpecies] = useState<string>();
+  const [selectedSpecies, setSelectedSpecies] = useState<string>("");
 
-  const applySpecies = (creature: Creature, species: Species) => {
-    // Placeholder for species application logic
-    console.log("Apply species to creature");
-    Object.entries(species.baseCharacteristics).forEach(([key, value]) => {
-      const randomValue = value - 10 + rollDie("2d10");
-      creature.setCharacteristicValue(key, randomValue);
-    });
-  };
+  const generateCreature = useCallback(() => {
+    if (!selectedSpecies) return;
 
-  const generateCreature = () => {
-    const creature = new Creature(BASE_CHARACTERISTIC_DEFINITION);
-    applySpecies(creature, getSpeciesByName(selectedSpecies ?? "Goblin"));
-    setCreature(creature);
+    const newCreature = new Creature(BASE_CHARACTERISTIC_DEFINITION);
+    applySpecies(newCreature, getSpeciesByName(selectedSpecies));
+    setCreature(newCreature);
     console.log("Generate creature");
-  };
+  }, [selectedSpecies]);
 
-  const getSpeciesByName = (name: string): Species => {
-    const species = SpeciesDefinition.find((s) => s.name === name);
-    if (!species) {
-      throw new Error(`Species with name ${name} not found`);
-    }
-    return species;
-  };
-
-  const SpeciesSelector = () => {
-    return (
-      <select
-        id="creatureTypeSelect"
-        value={selectedSpecies}
-        onChange={(e) => {
-          setSelectedSpecies(e.target.value || undefined);
-        }}
-      >
-        <option value="">Select</option>
-        {SpeciesDefinition.map((species) => (
-          <option key={species.name} value={species.name}>
-            {species.name}
-          </option>
-        ))}
-      </select>
-    );
-  };
   return (
     <>
       <h1>Bestiary</h1>
       <div>
-        <SpeciesSelector />
-        <button onClick={generateCreature}>Generate a creature</button>
-        {creature && <CreatureDisplay creature={creature} />}
+        <SpeciesSelector
+          selectedSpecies={selectedSpecies}
+          onSpeciesChange={setSelectedSpecies}
+        />
+        <button onClick={generateCreature} disabled={!selectedSpecies}>
+          Generate a creature
+        </button>
+        {creature && (
+          <div>
+            <CreatureDisplay creature={creature} />
+            <TraitsDisplay creature={creature} />
+          </div>
+        )}
       </div>
     </>
   );
