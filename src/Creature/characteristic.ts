@@ -21,6 +21,31 @@ export class Characteristic {
   }
 
   /**
+   * Sets the base value of the characteristic.
+   * @param value The new base value. Must be a non-negative number.
+   */
+  public setBaseValue(value: number): void {
+    if (value < 0) {
+      throw new Error("Base value cannot be negative.");
+    }
+    this._baseValue = value;
+  }
+
+  /**
+   * Modifies the base value of the characteristic by a given amount.
+   * @param delta The amount to modify the base value by. Can be positive or negative.
+   * @returns 
+   */
+  public modifyBaseValue(delta: number): void {
+    const newValue = this._baseValue + delta;
+    if (newValue < 0) {
+      this._baseValue = 0;
+      return;
+    }
+    this._baseValue = newValue;
+  }
+
+  /**
    * The number of advances applied to the characteristic.
    */
   public get advances(): number {

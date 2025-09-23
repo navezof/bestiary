@@ -19,4 +19,11 @@ export class Creature {
       (characteristic) => characteristic.name === name
     );
   }
+
+  public setCharacteristicValue(name: string, value: number): void {
+    const characteristic = this.getCharacteristic(name);
+    if (characteristic) {
+      characteristic.setBaseValue(value);
+    }
+  }
 }
