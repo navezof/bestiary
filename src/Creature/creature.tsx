@@ -4,8 +4,8 @@ import type { CharacteristicDefinition } from "./creature.type";
 export class Creature {
   private _characteristics: Characteristic[];
 
-  constructor(definitions: CharacteristicDefinition[]) {
-    this._characteristics = definitions.map(
+  constructor(characteristicsDefinitions: CharacteristicDefinition[]) {
+    this._characteristics = characteristicsDefinitions.map(
       (definition) => new Characteristic(definition)
     );
   }
