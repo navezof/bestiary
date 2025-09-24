@@ -18,6 +18,12 @@ export interface CharacteristicDefinition {
   description: string;
 }
 
+export interface SkillDefinition {
+  name: string;
+  description: string;
+  linkedCharacteristic: string;
+}
+
 export interface Species {
   name: string;
   baseCharacteristics: { [key: string]: number };
