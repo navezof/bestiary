@@ -1,11 +1,14 @@
 import { Characteristic } from "./characteristic";
 import type {
   CharacteristicDefinition,
+  SkillDefinition,
   TraitDefinition,
 } from "./creature.type";
+import { Skill } from "./skill";
 
 export class Creature {
   private _characteristics: Map<string, Characteristic>;
+  private _skills: Map<string, Skill>;
   private _traits: Map<string, TraitDefinition>;
   private _wounds: number;
 
@@ -16,6 +19,7 @@ export class Creature {
         new Characteristic(definition),
       ])
     );
+    this._skills = new Map();
     this._traits = new Map();
     this._wounds = 0;
   }
@@ -32,6 +36,30 @@ export class Creature {
     const characteristic = this.getCharacteristic(name);
     if (characteristic) {
       characteristic.setBaseValue(value);
+    }
+  }
+
+  public get skills(): readonly Skill[] {
+    return Array.from(this._skills.values());
+  }
+
+  public getSkill(name: string) {
+    return this._skills.get(name);
+  }
+
+  public addSkill(
+    definition: SkillDefinition,
+    baseAdvance: number,
+    specialization?: string
+  ) {
+    if (
+      !this.getSkill(definition.name) ||
+      this.getSkill(definition.name)?.specializations != specialization
+    ) {
+      this._skills.set(
+        definition.name,
+        new Skill(this, definition, baseAdvance, specialization)
+      );
     }
   }
 

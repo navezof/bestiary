@@ -7,6 +7,7 @@ import { CreatureDisplay } from "./CreatureDisplay";
 import type { Species, TraitDefinition } from "./creature.type";
 import { Creature } from "./Creature";
 import { TraitsDisplay } from "./TraitDisplay";
+import { SkillsDisplay } from "./SkillsDisplay";
 
 // Helper functions moved outside the component to prevent re-creation on render.
 const getSpeciesByName = (name: string): Species => {
@@ -23,6 +24,11 @@ const applySpecies = (creature: Creature, species: Species) => {
     const randomValue = value - 10 + rollDie("2d10");
     creature.setCharacteristicValue(key, randomValue);
   });
+  species.baseSkills?.forEach(
+    ({ skillDefinition, baseValue, specialization }) => {
+      creature.addSkill(skillDefinition, baseValue, specialization);
+    }
+  );
   species.baseTraits?.forEach((trait: TraitDefinition) =>
     creature.addTrait(trait)
   );
@@ -81,6 +87,7 @@ function App() {
         {creature && (
           <div>
             <CreatureDisplay creature={creature} />
+            <SkillsDisplay creature={creature} />
             <TraitsDisplay creature={creature} />
           </div>
         )}

@@ -1,5 +1,6 @@
 import type { Species } from "../creature.type";
 import { armour, hardy } from "../traits";
+import { Melee, Stealth } from "./skill.data";
 
 export const SpeciesDefinition: Species[] = [
   {
@@ -32,6 +33,7 @@ export const SpeciesDefinition: Species[] = [
       Fellowship: 20,
     },
     baseTraits: [{ ...armour, parameter: "3" }],
+    baseSkills: [{ skillDefinition: Melee, baseValue: 10, specialization: "Stabba" }, { skillDefinition: Stealth, baseValue: 5 }],
   },
   {
     name: "Orc",
@@ -48,6 +50,7 @@ export const SpeciesDefinition: Species[] = [
       Fellowship: 20,
     },
     baseTraits: [hardy, { ...armour, parameter: "6" }],
+    baseSkills: [{ skillDefinition: Melee, baseValue: 10, specialization: "Choppa" }],
     optionalTraits: [],
   },
 ];
