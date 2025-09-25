@@ -6,8 +6,10 @@ import { SpeciesDefinition } from "./data/species.data";
 import { CreatureDisplay } from "./CreatureDisplay";
 import type { Species, TraitDefinition } from "./creature.type";
 import { Creature } from "./Creature";
-import { TraitsDisplay } from "./TraitDisplay";
 import { SkillsDisplay } from "./SkillsDisplay";
+import { TraitsDisplay } from "./TraitsDisplay";
+
+const OPTIONAL_TRAIT_CHANCE = 0.5; // 50% chance to add each optional trait
 
 // Helper functions moved outside the component to prevent re-creation on render.
 const getSpeciesByName = (name: string): Species => {
@@ -20,18 +22,41 @@ const getSpeciesByName = (name: string): Species => {
 
 const applySpecies = (creature: Creature, species: Species) => {
   console.log("Apply species to creature");
+
+  addCharacteristic(creature, species);
+  addBaseSkills(creature, species);
+  addBaseTraits(creature, species);
+  addOptionalTraits(creature, species);
+};
+
+const addCharacteristic = (creature: Creature, species: Species) => {
   Object.entries(species.baseCharacteristics).forEach(([key, value]) => {
     const randomValue = value - 10 + rollDie("2d10");
     creature.setCharacteristicValue(key, randomValue);
   });
+};
+
+const addBaseSkills = (creature: Creature, species: Species) => {
   species.baseSkills?.forEach(
     ({ skillDefinition, baseValue, specialization }) => {
       creature.addSkill(skillDefinition, baseValue, specialization);
     }
   );
+};
+
+const addBaseTraits = (creature: Creature, species: Species) => {
   species.baseTraits?.forEach((trait: TraitDefinition) =>
     creature.addTrait(trait)
   );
+};
+
+const addOptionalTraits = (creature: Creature, species: Species) => {
+  species.optionalTraits?.forEach((trait: TraitDefinition) => {
+    const shouldAddTrait = Math.random() < OPTIONAL_TRAIT_CHANCE; // 50% chance to add each optional trait
+    if (shouldAddTrait) {
+      creature.addTrait(trait);
+    }
+  });
 };
 
 // The SpeciesSelector component is extracted from App.

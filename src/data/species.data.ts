@@ -1,5 +1,5 @@
 import type { Species } from "../creature.type";
-import { armour, hardy } from "../traits";
+import { animosity, armour, belligerent, dieHard, hardy, painless, ranged, size } from "./traits.data";
 import { Melee, Stealth } from "./skill.data";
 
 export const SpeciesDefinition: Species[] = [
@@ -49,8 +49,8 @@ export const SpeciesDefinition: Species[] = [
       Willpower: 35,
       Fellowship: 20,
     },
-    baseTraits: [hardy, { ...armour, parameter: "6" }],
+    baseTraits: [hardy, { ...armour, parameter: "3" }, { ...animosity, parameter: "Greenskin" }, belligerent, dieHard],
     baseSkills: [{ skillDefinition: Melee, baseValue: 10, specialization: "Choppa" }],
-    optionalTraits: [],
+    optionalTraits: [painless, { ...ranged, parameter: "+8, range 50" }, { ...size, parameter: "Large" }],
   },
 ];
