@@ -1,4 +1,4 @@
-import type { CharacteristicDefinition } from "./creature.type";
+import type { CharacteristicDefinition } from "./type";
 
 export class Characteristic {
   public readonly name: string;
@@ -34,7 +34,7 @@ export class Characteristic {
   /**
    * Modifies the base value of the characteristic by a given amount.
    * @param delta The amount to modify the base value by. Can be positive or negative.
-   * @returns 
+   * @returns
    */
   public modifyBaseValue(delta: number): void {
     const newValue = this._baseValue + delta;

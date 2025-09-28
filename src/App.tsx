@@ -1,10 +1,16 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import { rollDie } from "./utilities";
 import { BASE_CHARACTERISTIC_DEFINITION } from "./data/characteristics.data";
 import { SpeciesDefinition } from "./data/species.data";
 import { CreatureDisplay } from "./CreatureDisplay";
-import type { Species, TraitDefinition } from "./creature.type";
+import type {
+  Archetype,
+  CharacteristicModifier,
+  SkillModifier,
+  Species,
+  TraitDefinition,
+} from "./type";
 import { Creature } from "./Creature";
 import { SkillsDisplay } from "./SkillsDisplay";
 import { TraitsDisplay } from "./TraitsDisplay";
@@ -29,10 +35,32 @@ const applySpecies = (creature: Creature, species: Species) => {
   addOptionalTraits(creature, species);
 };
 
+const applyArchetype = (creature: Creature, archetype: Archetype) => {
+  console.log("Apply archetype to creature");
+
+  updateCharacteristics(creature, archetype.characteristics);
+  if (archetype.skills) updateSkills(creature, archetype.skills);
+};
+
+const updateCharacteristics = (
+  creature: Creature,
+  characteristics: CharacteristicModifier[]
+) => {
+  characteristics.forEach(({ definition, value }) => {
+    creature.updateCharacteristicValue(definition, value);
+  });
+};
+
+const updateSkills = (creature: Creature, skills: SkillModifier[]) => {
+  skills.forEach(({ definition, value }) => {
+    creature.updateSkill(definition, value);
+  });
+};
+
 const addCharacteristic = (creature: Creature, species: Species) => {
-  Object.entries(species.baseCharacteristics).forEach(([key, value]) => {
-    const randomValue = value - 10 + rollDie("2d10");
-    creature.setCharacteristicValue(key, randomValue);
+  Object.entries(species.baseCharacteristics).forEach(([, modifier]) => {
+    const randomValue = modifier.value - 10 + rollDie("2d10");
+    creature.setCharacteristicValue(modifier.definition, randomValue);
   });
 };
 
@@ -85,9 +113,55 @@ const SpeciesSelector = ({
   );
 };
 
+interface ArchetypeSelectorProps {
+  selectedSpecies: string;
+  selectedArchetype: string;
+  onArchetypeChange: (archetype: string) => void;
+}
+
+const ArchetypeSelector = ({
+  selectedSpecies,
+  selectedArchetype,
+  onArchetypeChange,
+}: ArchetypeSelectorProps) => {
+  const archetypes = getSpeciesByName(selectedSpecies).archetypes;
+  if (!archetypes) return;
+  return (
+    <select
+      id="creatureTypeSelect"
+      value={selectedArchetype}
+      onChange={(e) => onArchetypeChange(e.target.value)}
+    >
+      <option value="">Select an archetype</option>
+      {archetypes.map((archetype) => (
+        <option key={archetype.name} value={archetype.name}>
+          {archetype.name}
+        </option>
+      ))}
+    </select>
+  );
+};
+
 function App() {
   const [creature, setCreature] = useState<Creature | null>(null);
   const [selectedSpecies, setSelectedSpecies] = useState<string>("");
+  const [selectedArchetype, setSelectedArchetype] = useState<string>("");
+
+  useEffect(() => {
+    if (creature && selectedArchetype) {
+      const species = getSpeciesByName(selectedSpecies);
+      const archetype = species.archetypes?.find(
+        (a) => a.name === selectedArchetype
+      );
+
+      if (archetype) {
+        applyArchetype(creature, archetype);
+        // Create a shallow copy to trigger a re-render
+        setCreature(Object.assign(Object.create(creature), creature));
+        console.log("Applied archetype and updated creature state.");
+      }
+    }
+  }, [selectedArchetype]); // This effect depends on the selected archetype
 
   const generateCreature = useCallback(() => {
     if (!selectedSpecies) return;
@@ -96,6 +170,7 @@ function App() {
     applySpecies(newCreature, getSpeciesByName(selectedSpecies));
     setCreature(newCreature);
     console.log("Generate creature");
+    setSelectedArchetype(""); // Reset archetype on new creature
   }, [selectedSpecies]);
 
   return (
@@ -106,6 +181,13 @@ function App() {
           selectedSpecies={selectedSpecies}
           onSpeciesChange={setSelectedSpecies}
         />
+        {selectedSpecies && (
+          <ArchetypeSelector
+            selectedSpecies={selectedSpecies}
+            selectedArchetype={selectedArchetype}
+            onArchetypeChange={setSelectedArchetype}
+          />
+        )}
         <button onClick={generateCreature} disabled={!selectedSpecies}>
           Generate a creature
         </button>

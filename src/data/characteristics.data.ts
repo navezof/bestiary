@@ -1,4 +1,4 @@
-import type { CharacteristicDefinition } from "../creature.type";
+import type { CharacteristicDefinition } from "../type";
 
 export const WeaponSkill: CharacteristicDefinition = {
   name: "Weapon Skill",

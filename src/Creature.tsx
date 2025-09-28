@@ -3,7 +3,7 @@ import type {
   CharacteristicDefinition,
   SkillDefinition,
   TraitDefinition,
-} from "./creature.type";
+} from "./type";
 import { Skill } from "./skill";
 
 export class Creature {
@@ -28,14 +28,29 @@ export class Creature {
     return Array.from(this._characteristics.values());
   }
 
-  public getCharacteristic(name: string): Characteristic | undefined {
-    return this._characteristics.get(name);
+  public getCharacteristic(
+    definition: CharacteristicDefinition
+  ): Characteristic | undefined {
+    return this._characteristics.get(definition.name);
   }
 
-  public setCharacteristicValue(name: string, value: number): void {
-    const characteristic = this.getCharacteristic(name);
+  public setCharacteristicValue(
+    definition: CharacteristicDefinition,
+    value: number
+  ): void {
+    const characteristic = this.getCharacteristic(definition);
     if (characteristic) {
       characteristic.setBaseValue(value);
+    }
+  }
+
+  public updateCharacteristicValue(
+    definition: CharacteristicDefinition,
+    value: number
+  ): void {
+    const characteristic = this.getCharacteristic(definition);
+    if (characteristic) {
+      characteristic.setBaseValue(characteristic.value + value);
     }
   }
 
@@ -47,19 +62,38 @@ export class Creature {
     return this._skills.get(name);
   }
 
+  public hasSkill(
+    definition: SkillDefinition,
+    specialization: string | undefined
+  ) {
+    const skill = this.getSkill(definition.name);
+    if (!skill) return false;
+    if (specialization && skill.specialization != specialization) return false;
+    return true;
+  }
+
   public addSkill(
     definition: SkillDefinition,
-    baseAdvance: number,
+    advance: number,
     specialization?: string
   ) {
-    if (
-      !this.getSkill(definition.name) ||
-      this.getSkill(definition.name)?.specializations != specialization
-    ) {
+    if (!this.hasSkill(definition, specialization))
       this._skills.set(
         definition.name,
-        new Skill(this, definition, baseAdvance, specialization)
+        new Skill(this, definition, advance, specialization)
       );
+  }
+
+  public updateSkill(
+    definition: SkillDefinition,
+    advance: number,
+    specialization?: string
+  ) {
+    const skill = this.getSkill(definition.name);
+    if (skill) {
+      skill.addAdvances(advance);
+    } else {
+      this.addSkill(definition, advance, specialization);
     }
   }
 

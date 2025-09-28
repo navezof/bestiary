@@ -1,12 +1,13 @@
 import type { Creature } from "../Creature";
-import type { TraitDefinition } from "../creature.type";
+import type { TraitDefinition } from "../type";
+import { Toughness } from "./characteristics.data";
 
 export const hardy: TraitDefinition = {
   name: "Hardy",
   description:
     "The creature can sustain more damage than most. Increase its Wounds by a number equal to its Toughness Bonus (applied before any Size modifiers)..",
   apply: (creature: Creature) => {
-    const toughness = creature.getCharacteristic("Toughness");
+    const toughness = creature.getCharacteristic(Toughness);
     if (!toughness) {
       return;
     }

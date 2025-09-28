@@ -12,10 +12,10 @@ interface SkillDisplayProps {
 
 const SkillDisplay = ({ skill }: SkillDisplayProps) => {
   const skillText = `${skill.name} ${
-    skill.specializations() ? ` (${skill.specializations()})` : ""
-  }: ${skill.value()} (${skill.linkedCharacteristic}: ${
-    skill.characteristic().value
-  } + Advances: ${skill.advances()})`;
+    skill.specialization ? ` (${skill.specialization})` : ""
+  }: ${skill.value} (${skill.linkedCharacteristic.name}: ${
+    skill.characteristic.value
+  } + Advances: ${skill.advances})`;
 
   return <p>{skillText}</p>;
 };
