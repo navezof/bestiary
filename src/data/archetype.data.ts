@@ -7,6 +7,7 @@ import {
   Willpower,
 } from "./characteristics.data";
 import { Cool, Dodge, Melee } from "./skill.data";
+import { belligerent, dieHard } from "./traits.data";
 
 export const Soldier: Archetype = {
   name: "Soldier",
@@ -30,7 +31,7 @@ export const Soldier: Archetype = {
     {
       definition: Melee,
       value: 10,
-      //   specialization: "Basic or Polearm",
     },
   ],
+  traits: [belligerent, dieHard],
 };

@@ -116,8 +116,8 @@ export const SpeciesDefinition: Species[] = [
     ],
     baseTraits: [{ ...armour, parameter: "3" }],
     baseSkills: [
-      { skillDefinition: Melee, baseValue: 10, specialization: "Stabba" },
-      { skillDefinition: Stealth, baseValue: 5 },
+      { definition: Melee, value: 10, specialization: "Stabba" },
+      { definition: Stealth, value: 5 },
     ],
     archetypes: [Soldier],
   },
@@ -143,7 +143,7 @@ export const SpeciesDefinition: Species[] = [
       dieHard,
     ],
     baseSkills: [
-      { skillDefinition: Melee, baseValue: 10, specialization: "Choppa" },
+      { definition: Melee, value: 10, specialization: "Choppa" },
     ],
     optionalTraits: [
       painless,

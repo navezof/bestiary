@@ -2,6 +2,7 @@ import { Characteristic } from "./characteristic";
 import type {
   CharacteristicDefinition,
   SkillDefinition,
+  SkillModifier,
   TraitDefinition,
 } from "./type";
 import { Skill } from "./skill";
@@ -72,28 +73,25 @@ export class Creature {
     return true;
   }
 
-  public addSkill(
-    definition: SkillDefinition,
-    advance: number,
-    specialization?: string
-  ) {
-    if (!this.hasSkill(definition, specialization))
+  public addSkill(modifier: SkillModifier) {
+    if (!this.hasSkill(modifier.definition, modifier.specialization))
       this._skills.set(
-        definition.name,
-        new Skill(this, definition, advance, specialization)
+        modifier.definition.name,
+        new Skill(
+          this,
+          modifier.definition,
+          modifier.value,
+          modifier.specialization
+        )
       );
   }
 
-  public updateSkill(
-    definition: SkillDefinition,
-    advance: number,
-    specialization?: string
-  ) {
-    const skill = this.getSkill(definition.name);
+  public updateSkill(modifier: SkillModifier) {
+    const skill = this.getSkill(modifier.definition.name);
     if (skill) {
-      skill.addAdvances(advance);
+      skill.addAdvances(modifier.value);
     } else {
-      this.addSkill(definition, advance, specialization);
+      this.addSkill(modifier);
     }
   }
 

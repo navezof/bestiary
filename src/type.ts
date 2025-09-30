@@ -7,13 +7,6 @@ export interface TraitDefinition {
   parameter?: string;
 }
 
-export interface TalentDefinition {
-  name: string;
-  description: string;
-  apply?: (creature: Creature, parameter?: string) => void;
-  parameter?: string;
-}
-
 export interface CharacteristicDefinition {
   name: string;
   description: string;
@@ -40,11 +33,7 @@ export interface CharacteristicModifier {
 export interface Species {
   name: string;
   baseCharacteristics: CharacteristicModifier[];
-  baseSkills?: {
-    skillDefinition: SkillDefinition;
-    baseValue: number;
-    specialization?: string;
-  }[];
+  baseSkills?: SkillModifier[];
   baseTraits?: TraitDefinition[];
   optionalTraits?: TraitDefinition[];
   archetypes?: Archetype[];
@@ -55,7 +44,7 @@ export interface Archetype {
   description: string;
   characteristics: CharacteristicModifier[];
   skills?: SkillModifier[];
-  // talents?: TalentDefinition[];
+  traits?: TraitDefinition[];
   // trappings?: AnyItem[];
 }
 

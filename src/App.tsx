@@ -29,9 +29,9 @@ const getSpeciesByName = (name: string): Species => {
 const applySpecies = (creature: Creature, species: Species) => {
   console.log("Apply species to creature");
 
-  addCharacteristic(creature, species);
-  addBaseSkills(creature, species);
-  addBaseTraits(creature, species);
+  addCharacteristic(creature, species.baseCharacteristics);
+  if (species.baseSkills) addBaseSkills(creature, species.baseSkills);
+  if (species.baseTraits) addBaseTraits(creature, species.baseTraits);
   addOptionalTraits(creature, species);
 };
 
@@ -40,6 +40,7 @@ const applyArchetype = (creature: Creature, archetype: Archetype) => {
 
   updateCharacteristics(creature, archetype.characteristics);
   if (archetype.skills) updateSkills(creature, archetype.skills);
+  if (archetype.traits) addBaseTraits(creature, archetype.traits);
 };
 
 const updateCharacteristics = (
@@ -52,30 +53,29 @@ const updateCharacteristics = (
 };
 
 const updateSkills = (creature: Creature, skills: SkillModifier[]) => {
-  skills.forEach(({ definition, value }) => {
-    creature.updateSkill(definition, value);
+  skills.forEach((skill) => {
+    creature.updateSkill(skill);
   });
 };
 
-const addCharacteristic = (creature: Creature, species: Species) => {
-  Object.entries(species.baseCharacteristics).forEach(([, modifier]) => {
+const addCharacteristic = (
+  creature: Creature,
+  characteristics: CharacteristicModifier[]
+) => {
+  characteristics.forEach((modifier) => {
     const randomValue = modifier.value - 10 + rollDie("2d10");
     creature.setCharacteristicValue(modifier.definition, randomValue);
   });
 };
 
-const addBaseSkills = (creature: Creature, species: Species) => {
-  species.baseSkills?.forEach(
-    ({ skillDefinition, baseValue, specialization }) => {
-      creature.addSkill(skillDefinition, baseValue, specialization);
-    }
-  );
+const addBaseSkills = (creature: Creature, skills: SkillModifier[]) => {
+  skills.forEach((modifier) => {
+    creature.addSkill(modifier);
+  });
 };
 
-const addBaseTraits = (creature: Creature, species: Species) => {
-  species.baseTraits?.forEach((trait: TraitDefinition) =>
-    creature.addTrait(trait)
-  );
+const addBaseTraits = (creature: Creature, traits: TraitDefinition[]) => {
+  traits.forEach((trait: TraitDefinition) => creature.addTrait(trait));
 };
 
 const addOptionalTraits = (creature: Creature, species: Species) => {
