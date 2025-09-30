@@ -7,6 +7,7 @@ import { CreatureDisplay } from "./CreatureDisplay";
 import type {
   Archetype,
   CharacteristicModifier,
+  Item,
   SkillModifier,
   Species,
   TraitDefinition,
@@ -14,6 +15,7 @@ import type {
 import { Creature } from "./Creature";
 import { SkillsDisplay } from "./SkillsDisplay";
 import { TraitsDisplay } from "./TraitsDisplay";
+import { TrappingssDisplay } from "./TrappingsDisplay";
 
 const OPTIONAL_TRAIT_CHANCE = 0.5; // 50% chance to add each optional trait
 
@@ -41,6 +43,7 @@ const applyArchetype = (creature: Creature, archetype: Archetype) => {
   updateCharacteristics(creature, archetype.characteristics);
   if (archetype.skills) updateSkills(creature, archetype.skills);
   if (archetype.traits) addBaseTraits(creature, archetype.traits);
+  if (archetype.trappings) addTrappings(creature, archetype.trappings);
 };
 
 const updateCharacteristics = (
@@ -85,6 +88,10 @@ const addOptionalTraits = (creature: Creature, species: Species) => {
       creature.addTrait(trait);
     }
   });
+};
+
+const addTrappings = (creature: Creature, trappings: Item[]) => {
+  trappings.forEach((item: Item) => creature.addTrapping(item));
 };
 
 // The SpeciesSelector component is extracted from App.
@@ -196,6 +203,7 @@ function App() {
             <CreatureDisplay creature={creature} />
             <SkillsDisplay creature={creature} />
             <TraitsDisplay creature={creature} />
+            <TrappingssDisplay creature={creature} />
           </div>
         )}
       </div>

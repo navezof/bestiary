@@ -1,5 +1,6 @@
 import { Characteristic } from "./characteristic";
 import type {
+  AnyItem,
   CharacteristicDefinition,
   SkillDefinition,
   SkillModifier,
@@ -11,6 +12,8 @@ export class Creature {
   private _characteristics: Map<string, Characteristic>;
   private _skills: Map<string, Skill>;
   private _traits: Map<string, TraitDefinition>;
+  // TODO: Add inventory management to have several time the same item
+  private _trappings: Map<string, AnyItem>;
   private _wounds: number;
 
   constructor(characteristicsDefinitions: CharacteristicDefinition[]) {
@@ -22,6 +25,7 @@ export class Creature {
     );
     this._skills = new Map();
     this._traits = new Map();
+    this._trappings = new Map();
     this._wounds = 0;
   }
 
@@ -109,6 +113,17 @@ export class Creature {
       trait.apply?.(this, trait.parameter);
       this._traits.set(trait.name, trait);
     }
+  }
+
+  public addTrapping(item: AnyItem) {
+    if (item === undefined) return;
+    if (!this._trappings.get(item.name)) {
+      this._trappings.set(item.name, item);
+    }
+  }
+
+  public get trappings(): readonly AnyItem[] {
+    return this._trappings ? Array.from(this._trappings.values()) : [];
   }
 
   public get wounds(): number {

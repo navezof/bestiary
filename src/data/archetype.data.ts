@@ -6,6 +6,7 @@ import {
   Initiative,
   Willpower,
 } from "./characteristics.data";
+import { bowl, dagger, bow } from "./item.data";
 import { Cool, Dodge, Melee } from "./skill.data";
 import { belligerent, dieHard } from "./traits.data";
 
@@ -34,4 +35,5 @@ export const Soldier: Archetype = {
     },
   ],
   traits: [belligerent, dieHard],
+  trappings: [bowl, dagger, bow]
 };

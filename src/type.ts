@@ -45,7 +45,7 @@ export interface Archetype {
   characteristics: CharacteristicModifier[];
   skills?: SkillModifier[];
   traits?: TraitDefinition[];
-  // trappings?: AnyItem[];
+  trappings?: AnyItem[];
 }
 
 export const Availability = {
@@ -56,6 +56,14 @@ export const Availability = {
 };
 
 export type Availability = (typeof Availability)[keyof typeof Availability];
+
+export const Reach = {
+  Short: "Short",
+  Medium: "Medium",
+  Long: "Long",
+};
+
+export type Reach = (typeof Reach)[keyof typeof Reach];
 
 export interface Item {
   name: string;
@@ -98,7 +106,7 @@ export interface MeleeWeapon extends Item {
   type: "weapon";
   category: MeleeWeaponCategory;
   damage: string;
-  reach: string;
+  reach: Reach;
   // TODO: qualities?: string[];
 }
 
@@ -106,7 +114,7 @@ export interface RangedWeapon extends Item {
   type: "weapon";
   category: RangedWeaponCategory;
   damage: string;
-  range: string;
+  range: number;
   // TODO: qualities?: string[];
 }
 
