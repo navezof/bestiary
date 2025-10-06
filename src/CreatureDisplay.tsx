@@ -1,23 +1,56 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { CharacteristicsDisplay } from "./CharacteristicsDisplay";
 import type { Creature } from "./Creature";
+import { SkillsDisplay } from "./SkillsDisplay";
+import { TraitsDisplay } from "./TraitsDisplay";
+import { TrappingssDisplay } from "./TrappingsDisplay";
+import { getArchetypeFromSpeciesByName, getSpeciesByName } from "./utilities";
+import { ArchetypeSelector } from "./ArchetypeSelector";
+import type { Archetype } from "./type";
 
 interface CreatureDisplayProps {
   creature: Creature;
+  setCreature: (creature: Creature) => void;
 }
 
 export const CreatureDisplay: React.FC<CreatureDisplayProps> = ({
   creature,
+  setCreature,
 }) => {
+  const [selectedArchetype, setSelectedArchetype] = useState<string>("");
+  const [speciesArchetypes, setSpeciesArchetypes] = useState<Archetype[]>();
+
+  useEffect(() => {
+    setSpeciesArchetypes(getSpeciesByName(creature.species).archetypes);
+  }, [creature.species]);
+
+  const applyArchetype = () => {
+    const archetype = getArchetypeFromSpeciesByName(
+      selectedArchetype,
+      creature.species
+    );
+    creature.applyArchetype(archetype);
+    const newCreature = Object.assign(
+      Object.create(Object.getPrototypeOf(creature)),
+      creature
+    );
+    setCreature(newCreature);
+  };
+
   return (
     <div>
-      <h2>Characteristics</h2>
-      <ul>
-        {creature.characteristics.map((characteristic) => (
-          <li key={characteristic.name}>
-            <strong>{characteristic.name}:</strong> {characteristic.value}
-          </li>
-        ))}
-      </ul>
+      <ArchetypeSelector
+        selectedArchetype={selectedArchetype}
+        archetypes={speciesArchetypes}
+        onArchetypeChange={setSelectedArchetype}
+      />
+      <button onClick={applyArchetype} disabled={!speciesArchetypes}>
+        Apply Archetype
+      </button>
+      <CharacteristicsDisplay creature={creature} />
+      <SkillsDisplay creature={creature} />
+      <TraitsDisplay creature={creature} />
+      <TrappingssDisplay creature={creature} />
     </div>
   );
 };
