@@ -29,11 +29,7 @@ export const CreatureDisplay: React.FC<CreatureDisplayProps> = ({
       selectedArchetype,
       creature.species
     );
-    creature.applyArchetype(archetype);
-    const newCreature = Object.assign(
-      Object.create(Object.getPrototypeOf(creature)),
-      creature
-    );
+    const newCreature = creature.applyArchetype(archetype);
     setCreature(newCreature);
   };
 

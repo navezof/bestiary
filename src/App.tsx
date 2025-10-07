@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import "./App.css";
-import { BASE_CHARACTERISTIC_DEFINITION } from "./data/characteristics.data";
 import { Creature } from "./Creature";
 import { CreatureDisplay } from "./CreatureDisplay";
 import { getSpeciesByName } from "./utilities";
@@ -13,8 +12,8 @@ function App() {
   const generateCreature = useCallback(() => {
     if (!selectedSpecies) return;
 
-    const newCreature = new Creature(BASE_CHARACTERISTIC_DEFINITION);
-    newCreature.applySpecies(getSpeciesByName(selectedSpecies));
+    let newCreature = new Creature();
+    newCreature = newCreature.applySpecies(getSpeciesByName(selectedSpecies));
     setCreature(newCreature);
   }, [selectedSpecies]);
 

@@ -16,11 +16,12 @@ const SkillDisplay = ({ skill }: SkillDisplayProps) => {
   }: ${skill.value} (${skill.linkedCharacteristic.name}: ${
     skill.characteristic.value
   } + Advances: ${skill.advances})`;
-
+  console.log("display skill: ", skillText);
   return <p>{skillText}</p>;
 };
 
 export const SkillsDisplay: React.FC<SkillsDisplayProps> = ({ creature }) => {
+  console.log("display skills ", creature.skills);
   return (
     <div>
       <h2>Skills</h2>
