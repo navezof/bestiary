@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { CharacteristicsDisplay } from "./CharacteristicsDisplay";
 import { SkillsDisplay } from "./SkillsDisplay";
 import { TraitsDisplay } from "./TraitsDisplay";
-import { TrappingssDisplay } from "./TrappingsDisplay";
+import { TrappingsDisplay } from "./TrappingsDisplay";
 import { getArchetypeFromSpeciesByName, getSpeciesByName } from "../utilities";
+import { CreatureBuilder } from "../domains/creatureMaker";
 import { ArchetypeSelector } from "./ArchetypeSelector";
 import type { Archetype } from "../type";
 import type { Creature } from "../domains/Creature";
@@ -24,12 +25,14 @@ export const CreatureDisplay: React.FC<CreatureDisplayProps> = ({
     setSpeciesArchetypes(getSpeciesByName(creature.species).archetypes);
   }, [creature.species]);
 
-  const applyArchetype = () => {
+  const setArchetype = () => {
     const archetype = getArchetypeFromSpeciesByName(
       selectedArchetype,
       creature.species
     );
-    const newCreature = creature.applyArchetype(archetype);
+    const newCreature = CreatureBuilder.from(creature)
+      .withArchetype(archetype)
+      .build();
     setCreature(newCreature);
   };
 
@@ -40,13 +43,13 @@ export const CreatureDisplay: React.FC<CreatureDisplayProps> = ({
         archetypes={speciesArchetypes}
         onArchetypeChange={setSelectedArchetype}
       />
-      <button onClick={applyArchetype} disabled={!speciesArchetypes}>
-        Apply Archetype
+      <button onClick={setArchetype} disabled={!speciesArchetypes}>
+        Set Archetype
       </button>
       <CharacteristicsDisplay creature={creature} />
       <SkillsDisplay creature={creature} />
       <TraitsDisplay creature={creature} />
-      <TrappingssDisplay creature={creature} />
+      <TrappingsDisplay creature={creature} />
     </div>
   );
 };

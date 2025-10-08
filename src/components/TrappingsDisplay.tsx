@@ -1,4 +1,4 @@
-import { Creature } from "../Creature";
+import type { Creature } from "../domains/Creature";
 import type { Item } from "../type";
 
 interface TrappingDisplayProps {
@@ -14,7 +14,7 @@ interface TrappingsDisplayProps {
   creature: Creature;
 }
 
-export const TrappingssDisplay: React.FC<TrappingsDisplayProps> = ({
+export const TrappingsDisplay: React.FC<TrappingsDisplayProps> = ({
   creature,
 }) => {
   return (

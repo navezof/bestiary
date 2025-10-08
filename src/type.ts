@@ -1,4 +1,4 @@
-import type { Creature } from "./Creature";
+import type { Creature } from "./domains/Creature";
 
 export interface TraitDefinition {
   name: string;
@@ -12,6 +12,11 @@ export interface CharacteristicDefinition {
   description: string;
 }
 
+export interface CharacteristicModifier {
+  definition: CharacteristicDefinition;
+  value: number;
+}
+
 export interface SkillDefinition {
   name: string;
   description: string;
@@ -23,11 +28,6 @@ export interface SkillModifier {
   definition: SkillDefinition;
   value: number;
   specialization?: string;
-}
-
-export interface CharacteristicModifier {
-  definition: CharacteristicDefinition;
-  value: number;
 }
 
 export interface Species {
