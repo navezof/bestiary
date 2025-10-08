@@ -4,7 +4,7 @@ import { SkillsDisplay } from "./SkillsDisplay";
 import { TraitsDisplay } from "./TraitsDisplay";
 import { TrappingsDisplay } from "./TrappingsDisplay";
 import { getArchetypeFromSpeciesByName, getSpeciesByName } from "../utilities";
-import { CreatureBuilder } from "../domains/creatureMaker";
+import { CreatureBuilder } from "../domains/creatureBuilder";
 import { ArchetypeSelector } from "./ArchetypeSelector";
 import type { Archetype } from "../type";
 import type { Creature } from "../domains/Creature";

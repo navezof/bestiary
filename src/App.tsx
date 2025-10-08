@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import "./App.css";
 import { CreatureDisplay } from "./components/CreatureDisplay";
-import { CreatureBuilder } from "./domains/creatureMaker";
+import { CreatureBuilder } from "./domains/creatureBuilder";
 import { getSpeciesByName } from "./utilities";
 import { SpeciesSelector } from "./components/SpeciesSelector";
 import { Creature } from "./domains/Creature";

@@ -11,17 +11,6 @@ import { rollDie } from "../utilities";
 import { Creature } from "./Creature";
 import { Skill } from "./skill";
 
-export const applySpecies = (source: Creature, species: Species): Creature => {
-  let creature = new Creature(source);
-  creature.species = species.name;
-  creature = initializeCharacteristics(creature, species.baseCharacteristics);
-  if (species.baseSkills) creature = updateSkills(creature, species.baseSkills);
-  if (species.baseTraits) creature = addTraits(creature, species.baseTraits);
-  if (species.optionalTraits)
-    creature = addTraits(creature, species.optionalTraits, 50);
-  return creature;
-};
-
 export const initializeCharacteristics = (
   source: Creature,
   characteristics: CharacteristicModifier[]
@@ -121,19 +110,28 @@ export const addTrappings = (source: Creature, trappings: Item[]): Creature => {
   return creature;
 };
 
+export const applySpecies = (source: Creature, species: Species): Creature => {
+  const newCreature = CreatureBuilder.from(source)
+    .withBaseCharacteristics(species.baseCharacteristics)
+    .withSkills(species.baseSkills ?? [])
+    .withTraits(species.baseTraits ?? [])
+    .withTraits(species.optionalTraits ?? [])
+    .build();
+  newCreature.species = species.name;
+  return newCreature;
+};
+
 export const applyArchetype = (
   source: Creature,
   archetype: Archetype
 ): Creature => {
-  let creature = new Creature(source);
-  creature = updateCharacteristics(creature, archetype.characteristics);
-  if (archetype.skills) {
-    creature = updateSkills(creature, archetype.skills);
-  }
-  if (archetype.traits) creature = addTraits(creature, archetype.traits);
-  if (archetype.trappings)
-    creature = addTrappings(creature, archetype.trappings);
-  return creature;
+  const newCreature = CreatureBuilder.from(source)
+    .withCharacteristics(archetype.characteristics)
+    .withSkills(archetype.skills ?? [])
+    .withTraits(archetype.traits ?? [])
+    .withTrappings(archetype.trappings ?? [])
+    .build();
+  return newCreature;
 };
 
 export class CreatureBuilder {
@@ -164,6 +162,11 @@ export class CreatureBuilder {
 
   withCharacteristics(characteristics: CharacteristicModifier[]) {
     this._creature = updateCharacteristics(this._creature, characteristics);
+    return this;
+  }
+
+  withBaseCharacteristics(characteristics: CharacteristicModifier[]) {
+    this._creature = initializeCharacteristics(this._creature, characteristics);
     return this;
   }
 
