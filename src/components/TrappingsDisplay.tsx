@@ -1,5 +1,5 @@
-import { Creature } from "./Creature";
-import type { Item } from "./type";
+import { Creature } from "../Creature";
+import type { Item } from "../type";
 
 interface TrappingDisplayProps {
   trapping: Item;

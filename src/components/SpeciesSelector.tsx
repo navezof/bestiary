@@ -1,4 +1,4 @@
-import { SpeciesDefinition } from "./data/species.data";
+import { SpeciesDefinition } from "../data/species.data";
 
 // The SpeciesSelector component is extracted from App.
 interface SpeciesSelectorProps {

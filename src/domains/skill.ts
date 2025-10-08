@@ -1,6 +1,6 @@
+import type { CharacteristicDefinition, SkillDefinition } from "../type";
 import type { Characteristic } from "./characteristic";
 import type { Creature } from "./Creature";
-import type { CharacteristicDefinition, SkillDefinition } from "./type";
 
 export class Skill {
   public readonly name: string;

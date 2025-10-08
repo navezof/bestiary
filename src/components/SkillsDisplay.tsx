@@ -1,6 +1,6 @@
 import React from "react";
-import type { Creature } from "./Creature";
-import type { Skill } from "./skill";
+import type { Creature } from "../domains/Creature";
+import type { Skill } from "../domains/skill";
 
 interface SkillsDisplayProps {
   creature: Creature;

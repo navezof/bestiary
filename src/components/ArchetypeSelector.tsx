@@ -1,4 +1,4 @@
-import type { Archetype } from "./type";
+import type { Archetype } from "../type";
 
 interface ArchetypeSelectorProps {
   selectedArchetype: string;

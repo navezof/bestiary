@@ -1,6 +1,6 @@
 import React from "react";
-import type { Creature } from "./Creature";
-import type { TraitDefinition } from "./type";
+import type { Creature } from "../Creature";
+import type { TraitDefinition } from "../type";
 
 interface TraitsDisplayProps {
   creature: Creature;

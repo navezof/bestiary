@@ -1,19 +1,34 @@
-import { Characteristic } from "./characteristic";
+import { BASE_CHARACTERISTIC_DEFINITION } from "../data/characteristics.data";
+import { SpeciesDefinition } from "../data/species.data";
 import type {
-  AnyItem,
-  Archetype,
-  CharacteristicDefinition,
-  CharacteristicModifier,
-  Item,
-  SkillDefinition,
-  SkillModifier,
   Species,
   TraitDefinition,
-} from "./type";
+  AnyItem,
+  CharacteristicDefinition,
+  CharacteristicModifier,
+  SkillDefinition,
+  SkillModifier,
+  Item,
+  Archetype,
+} from "../type";
+import { rollDie } from "../utilities";
+import { Characteristic } from "./characteristic";
 import { Skill } from "./skill";
-import { SpeciesDefinition } from "./data/species.data";
-import { rollDie } from "./utilities";
-import { BASE_CHARACTERISTIC_DEFINITION } from "./data/characteristics.data";
+
+/* example created by john
+export function applySpecies(species: Species) {
+  let creature = new Creature(this);
+  console.log("[start] applySpecies", creature);
+  creature.species = species.name;
+  creature = creature.initializeCharacteristics(species.baseCharacteristics);
+  if (species.baseSkills) creature = creature.updateSkills(species.baseSkills);
+  if (species.baseTraits) creature = creature.addTraits(species.baseTraits);
+  if (species.optionalTraits)
+    creature = creature.addTraits(species.optionalTraits, 50);
+  console.log("[end] applySpecies", creature.skills);
+  return creature;
+}
+*/
 
 export class Creature {
   private _species: string;

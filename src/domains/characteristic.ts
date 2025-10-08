@@ -1,4 +1,4 @@
-import type { CharacteristicDefinition } from "./type";
+import type { CharacteristicDefinition } from "../type";
 
 export class Characteristic {
   public readonly name: string;

@@ -1,4 +1,4 @@
-import type { Creature } from "../Creature";
+import type { Creature } from "../domains/Creature";
 import type { TraitDefinition } from "../type";
 import { Toughness } from "./characteristics.data";
 

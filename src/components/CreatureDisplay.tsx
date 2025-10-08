@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { CharacteristicsDisplay } from "./CharacteristicsDisplay";
-import type { Creature } from "./Creature";
 import { SkillsDisplay } from "./SkillsDisplay";
 import { TraitsDisplay } from "./TraitsDisplay";
 import { TrappingssDisplay } from "./TrappingsDisplay";
-import { getArchetypeFromSpeciesByName, getSpeciesByName } from "./utilities";
+import { getArchetypeFromSpeciesByName, getSpeciesByName } from "../utilities";
 import { ArchetypeSelector } from "./ArchetypeSelector";
-import type { Archetype } from "./type";
+import type { Archetype } from "../type";
+import type { Creature } from "../domains/Creature";
 
 interface CreatureDisplayProps {
   creature: Creature;

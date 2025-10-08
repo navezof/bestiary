@@ -1,5 +1,5 @@
 import React from "react";
-import type { Creature } from "./Creature";
+import type { Creature } from "../domains/Creature";
 
 interface CharacteristicsDisplayProps {
   creature: Creature;
