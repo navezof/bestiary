@@ -69,6 +69,8 @@ export const SpeciesDefinition: Species[] = [
         value: 20,
       },
     ],
+    movement: 4,
+    wounds: 8,
   },
   {
     name: "Goblin",
@@ -120,6 +122,8 @@ export const SpeciesDefinition: Species[] = [
       { definition: Stealth, value: 5 },
     ],
     archetypes: [Soldier],
+    movement: 4,
+    wounds: 11,
   },
   {
     name: "Orc",
@@ -142,13 +146,13 @@ export const SpeciesDefinition: Species[] = [
       belligerent,
       dieHard,
     ],
-    baseSkills: [
-      { definition: Melee, value: 10, specialization: "Choppa" },
-    ],
+    baseSkills: [{ definition: Melee, value: 10, specialization: "Choppa" }],
     optionalTraits: [
       painless,
       { ...ranged, parameter: "+8, range 50" },
       { ...size, parameter: "Large" },
     ],
+    movement: 4,
+    wounds: 14,
   },
 ];

@@ -9,6 +9,7 @@ export interface TraitDefinition {
 
 export interface CharacteristicDefinition {
   name: string;
+  shortName: string;
   description: string;
 }
 
@@ -37,6 +38,8 @@ export interface Species {
   baseTraits?: TraitDefinition[];
   optionalTraits?: TraitDefinition[];
   archetypes?: Archetype[];
+  movement: number;
+  wounds: number;
 }
 
 export interface Archetype {

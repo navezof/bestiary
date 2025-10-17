@@ -15,6 +15,7 @@ export class Creature {
   private _traits: Map<string, TraitDefinition>;
   private _trappings: Map<string, AnyItem>;
   private _wounds: number;
+  private _movement: number;
 
   constructor(source?: Creature) {
     if (source) {
@@ -25,6 +26,7 @@ export class Creature {
       this._traits = new Map(source._traits);
       this._trappings = new Map(source._trappings);
       this._wounds = source._wounds;
+      this._movement = source._movement;
     } else {
       // Default constructor
       this._species = SpeciesDefinition[0].name;
@@ -38,6 +40,7 @@ export class Creature {
       this._traits = new Map();
       this._trappings = new Map();
       this._wounds = 0;
+      this._movement = 0;
     }
   }
 
@@ -108,11 +111,23 @@ export class Creature {
     return this._trappings;
   }
 
+  /// WOUNDS
+
   public get wounds(): number {
     return this._wounds;
   }
 
   public set wounds(value: number) {
     this._wounds = value;
+  }
+
+  /// MOVEMENT
+
+  public get movement(): number {
+    return this._movement;
+  }
+
+  public set movement(value: number) {
+    this._movement = value;
   }
 }

@@ -2,12 +2,14 @@ import type { CharacteristicDefinition } from "../type";
 
 export class Characteristic {
   public readonly name: string;
+  public readonly shortName: string;
   public readonly description: string;
   private _baseValue: number;
   private _advances: number;
 
   constructor(definition: CharacteristicDefinition) {
     this.name = definition.name;
+    this.shortName = definition.shortName;
     this.description = definition.description;
     this._baseValue = 0;
     this._advances = 0;
