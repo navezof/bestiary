@@ -1,0 +1,6 @@
+.creature-display-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Adjust this value to increase/decrease the space */
+  align-items: flex-start; /* Aligns items to the start of the container */
+}

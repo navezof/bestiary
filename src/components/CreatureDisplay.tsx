@@ -6,6 +6,7 @@ import { TrappingsDisplay } from "./TrappingsDisplay";
 import { getArchetypeFromSpeciesByName, getSpeciesByName } from "../utilities";
 import { CreatureBuilder } from "../domains/creatureBuilder";
 import { ArchetypeSelector } from "./ArchetypeSelector";
+import "./CreatureDisplay.css";
 import type { Archetype } from "../type";
 import type { Creature } from "../domains/Creature";
 
@@ -37,7 +38,7 @@ export const CreatureDisplay: React.FC<CreatureDisplayProps> = ({
   };
 
   return (
-    <div>
+    <div className="creature-display-container">
       <ArchetypeSelector
         selectedArchetype={selectedArchetype}
         archetypes={speciesArchetypes}

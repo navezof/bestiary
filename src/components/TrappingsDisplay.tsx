@@ -1,14 +1,4 @@
 import type { Creature } from "../domains/Creature";
-import type { Item } from "../type";
-
-interface TrappingDisplayProps {
-  trapping: Item;
-}
-
-const TrappingDisplay = ({ trapping }: TrappingDisplayProps) => {
-  const itemText = `${trapping.name} - ${trapping.description} (Cost: ${trapping.cost}, Encumbrance: ${trapping.encumbrance}, Availability: ${trapping.availability})`;
-  return <p>{itemText}</p>;
-};
 
 interface TrappingsDisplayProps {
   creature: Creature;
@@ -17,16 +7,15 @@ interface TrappingsDisplayProps {
 export const TrappingsDisplay: React.FC<TrappingsDisplayProps> = ({
   creature,
 }) => {
+  if (!creature.trappings || creature.trappings.length === 0) {
+    return null;
+  }
+  const trappingsString = creature.trappings
+    .map((trapping) => `${trapping.name}`)
+    .join(", ");
   return (
     <div>
-      <h2>Trapping</h2>
-      <ul>
-        {creature.trappings.map((trapping) => (
-          <li key={trapping.name}>
-            <TrappingDisplay trapping={trapping} />
-          </li>
-        ))}
-      </ul>
+      <b>Trappings: </b> {trappingsString}
     </div>
   );
 };

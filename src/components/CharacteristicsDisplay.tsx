@@ -11,7 +11,6 @@ export const CharacteristicsDisplay: React.FC<CharacteristicsDisplayProps> = ({
 }) => {
   return (
     <div>
-      <h2>Characteristics</h2>
       <table className="characteristics-table">
         <thead>
           <tr>
