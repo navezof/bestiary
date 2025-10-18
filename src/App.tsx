@@ -1,26 +1,55 @@
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { CreatureDisplay } from "./components/CreatureDisplay";
 import { CreatureBuilder } from "./domains/creatureBuilder";
-import { getSpeciesByName } from "./utilities";
+import { getArchetypeFromSpeciesByName, getSpeciesByName } from "./utilities";
 import { SpeciesSelector } from "./components/SpeciesSelector";
 import { Creature } from "./domains/Creature";
 
 function App() {
-  const [creature, setCreature] = useState<Creature | null>(null);
+  const [creatureWithArchetype, setCreatureWithArchetype] =
+    useState<Creature | null>(null);
+  const [baseCreature, setBaseCreature] = useState<Creature | null>(null);
   const [selectedSpecies, setSelectedSpecies] = useState<string>("");
+  const [selectedArchetype, setSelectedArchetype] = useState<string>("");
 
-  const generateCreature = useCallback(() => {
-    if (!selectedSpecies) return;
+  useEffect(() => {
+    if (!selectedSpecies) {
+      setBaseCreature(null);
+      setCreatureWithArchetype(null);
+      setSelectedArchetype("");
+      return;
+    }
 
     const species = getSpeciesByName(selectedSpecies);
-
     const newCreature = CreatureBuilder.from(new Creature())
       .withSpecies(species)
       .build();
 
-    setCreature(newCreature);
+    setBaseCreature(newCreature);
+    // Reset archetype when species changes
+    setSelectedArchetype("");
   }, [selectedSpecies]);
+
+  useEffect(() => {
+    if (!baseCreature) {
+      setCreatureWithArchetype(null);
+      return;
+    }
+    if (!selectedArchetype) {
+      setCreatureWithArchetype(baseCreature);
+      return;
+    }
+
+    const archetype = getArchetypeFromSpeciesByName(
+      selectedArchetype,
+      baseCreature.species
+    );
+    const newCreature = CreatureBuilder.from(baseCreature)
+      .withArchetype(archetype)
+      .build();
+    setCreatureWithArchetype(newCreature);
+  }, [baseCreature, selectedArchetype]);
 
   return (
     <>
@@ -30,11 +59,12 @@ function App() {
           selectedSpecies={selectedSpecies}
           onSpeciesChange={setSelectedSpecies}
         />
-        <button onClick={generateCreature} disabled={!selectedSpecies}>
-          Generate a creature
-        </button>
-        {creature && (
-          <CreatureDisplay creature={creature} setCreature={setCreature} />
+        {creatureWithArchetype && (
+          <CreatureDisplay
+            creature={creatureWithArchetype}
+            selectedArchetype={selectedArchetype}
+            onArchetypeChange={setSelectedArchetype}
+          />
         )}
       </div>
     </>
