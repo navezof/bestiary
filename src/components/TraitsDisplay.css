@@ -1,0 +1,66 @@
+.traits-display {
+  display: block;
+  line-height: 1.4;
+}
+
+.traits-list {
+  display: inline;
+}
+
+.trait {
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+.trait:focus .trait-name,
+.trait:hover .trait-name {
+  text-decoration: underline;
+}
+
+.trait-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  max-width: 320px;
+  background: rgba(32, 33, 36, 0.95);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+  transform-origin: bottom center;
+  z-index: 20;
+}
+
+.trait:hover .trait-tooltip,
+.trait:focus .trait-tooltip,
+.trait .trait-tooltip:focus {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* small caret */
+.trait-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: rgba(32, 33, 36, 0.95) transparent transparent transparent;
+}
+
+/* make sure long text wraps nicely */
+.trait-tooltip {
+  white-space: normal;
+  word-wrap: break-word;
+}
