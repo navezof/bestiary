@@ -1,18 +1,17 @@
-import type { Archetype } from "../type";
-
 interface ArchetypeSelectorProps {
-  selectedArchetype: string;
-  archetypes: Archetype[] | undefined;
-  onArchetypeChange: (archetype: string) => void;
+  selectedArchetypeName: string;
+  archetypes: string[] | undefined;
+  onArchetypeChange: (archetypeName: string) => void;
 }
 
 export const ArchetypeSelector = ({
-  selectedArchetype,
+  selectedArchetypeName: selectedArchetype,
   archetypes,
   onArchetypeChange,
 }: ArchetypeSelectorProps) => {
-  console.log("ARCHETYPE SELECTOR");
-  if (!archetypes) return;
+  if (archetypes?.length === 0 || !archetypes) {
+    return;
+  }
   return (
     <select
       id="archetypeSelect"
@@ -21,8 +20,8 @@ export const ArchetypeSelector = ({
     >
       <option value="">Select an archetype</option>
       {archetypes.map((archetype) => (
-        <option key={archetype.name} value={archetype.name}>
-          {archetype.name}
+        <option key={archetype} value={archetype}>
+          {archetype}
         </option>
       ))}
     </select>
