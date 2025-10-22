@@ -1,6 +1,5 @@
 import { SpeciesDefinition } from "../data/species.data";
 
-// The SpeciesSelector component is extracted from App.
 interface SpeciesSelectorProps {
   selectedSpecies: string;
   onSpeciesChange: (species: string) => void;

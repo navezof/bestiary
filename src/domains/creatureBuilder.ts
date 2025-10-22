@@ -20,6 +20,8 @@ export const initializeCharacteristics = (
     const randomValue = modifier.value - 10 + rollDie("2d10");
     creature.setCharacteristicValue(modifier.definition, randomValue);
   });
+  creature.wounds = source.wounds;
+  creature.movement = source.movement;
   return creature;
 };
 
@@ -116,6 +118,8 @@ export const applySpecies = (source: Creature, species: Species): Creature => {
     .withSkills(species.baseSkills ?? [])
     .withTraits(species.baseTraits ?? [])
     .withTraits(species.optionalTraits ?? [])
+    .withWounds(species.wounds)
+    .withMovement(species.movement)
     .build();
   newCreature.species = species.name;
   return newCreature;
@@ -167,6 +171,16 @@ export class CreatureBuilder {
 
   withBaseCharacteristics(characteristics: CharacteristicModifier[]) {
     this._creature = initializeCharacteristics(this._creature, characteristics);
+    return this;
+  }
+
+  withWounds(wounds: number) {
+    this._creature.wounds = wounds;
+    return this;
+  }
+
+  withMovement(movement: number) {
+    this._creature.movement = movement;
     return this;
   }
 
