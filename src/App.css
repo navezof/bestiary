@@ -3,3 +3,27 @@
   margin: 0 auto;
   padding: 2rem;
 }
+
+.bestiary-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(90deg, #111827 0%, #0f172a 60%);
+  color: #fff;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.bestiary-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+}
+
+/* grid of creature columns */
+.bestiary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
